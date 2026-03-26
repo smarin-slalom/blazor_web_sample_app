@@ -1,0 +1,76 @@
+name: Build and Push to ECR
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        required: true
+        type: choice
+        options:
+          - poc
+          - dev
+          - nonprod
+          - prod
+      image_tag:
+        description: "Image tag (defaults to short SHA)"
+        required: false
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-west-1
+  ECR_REPOSITORY: zelis-ecr-poc-repo
+
+jobs:
+  build-and-push:
+    name: Build & Push – ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set image tag
+        id: tag
+        run: |
+          TAG="${{ inputs.image_tag }}"
+          if [ -z "$TAG" ]; then
+            TAG="${GITHUB_SHA::7}"
+          fi
+          echo "IMAGE_TAG=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push Docker image
+        env:
+          REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          IMAGE_TAG: ${{ steps.tag.outputs.IMAGE_TAG }}
+        run: |
+          IMAGE="$REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG"
+          IMAGE_ENV="$REGISTRY/${{ env.ECR_REPOSITORY }}:${{ inputs.environment }}"
+          IMAGE_LATEST="$REGISTRY/${{ env.ECR_REPOSITORY }}:latest"
+
+          docker build -t "$IMAGE" -t "$IMAGE_ENV" -t "$IMAGE_LATEST" .
+          docker push "$IMAGE"
+          docker push "$IMAGE_ENV"
+          docker push "$IMAGE_LATEST"
+
+          echo "### Image pushed :whale:" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Detail | Value |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|--------|-------|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Registry | \`$REGISTRY\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Repository | \`${{ env.ECR_REPOSITORY }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Tags | \`$IMAGE_TAG\`, \`${{ inputs.environment }}\`, \`latest\` |" >> "$GITHUB_STEP_SUMMARY"
