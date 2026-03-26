@@ -10,20 +10,12 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
-    [PersistentState]
-    public int? CurrentCount { get; set; }
+    public int CurrentCount { get; set; }
 
     protected override void OnInitialized()
     {
-        if (CurrentCount is null)
-        {
-            CurrentCount = Random.Shared.Next(100);
-            Logger.LogInformation("CurrentCount set to {Count}", CurrentCount);
-        }
-        else
-        {
-            Logger.LogInformation("CurrentCount restored to {Count}", CurrentCount);
-        }
+        CurrentCount = Random.Shared.Next(100);
+        Logger.LogInformation("CurrentCount set to {Count}", CurrentCount);
     }
 
     private void IncrementCount() => CurrentCount++;
