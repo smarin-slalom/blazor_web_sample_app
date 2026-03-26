@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "BlazorSample/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.QuickGrid": "10.0.0"
+        },
+        "runtime": {
+          "BlazorSample.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Components.QuickGrid/10.0.0": {
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.Components.QuickGrid.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.52411"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BlazorSample/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.AspNetCore.Components.QuickGrid/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-auZSKtJ3nyhEk+zIC28fIL7oA1nDGce9ZhUKy75jp1lP66JykcD1wv1PnMzigsd6BMROhhnfoLxMDDCUTz3eKA==",
+      "path": "microsoft.aspnetcore.components.quickgrid/10.0.0",
+      "hashPath": "microsoft.aspnetcore.components.quickgrid.10.0.0.nupkg.sha512"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "7GFID1Mzi3U=",
+  "success": true,
+  "projectFilePath": "/Users/santiago/Library/CloudStorage/OneDrive-Slalom/Documents/zelis/blazor_sampleapp/blazor-samples/10.0/BlazorSample_BlazorWebApp/BlazorSample.csproj",
+  "expectedPackageFiles": [
+    "/Users/santiago/.nuget/packages/microsoft.aspnetcore.app.internal.assets/10.0.5/microsoft.aspnetcore.app.internal.assets.10.0.5.nupkg.sha512",
+    "/Users/santiago/.nuget/packages/microsoft.aspnetcore.components.quickgrid/10.0.0/microsoft.aspnetcore.components.quickgrid.10.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
